@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}New Item{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div><h1>🗡️ New Item</h1></div>
+    <a href="{{ url_for('main.item_list') }}" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="form-card">
+    <form method="POST">
+        <div class="form-group">
+            <label for="ItemName">Item Name</label>
+            <input type="text" id="ItemName" name="ItemName" class="form-control" required>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="ItemTypeID">Item Type</label>
+                <select id="ItemTypeID" name="ItemTypeID" class="form-control" required>
+                    {% for t in form_vm.item_types %}
+                    <option value="{{ t.ItemTypeID }}">{{ t.TypeName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="RarityID">Rarity</label>
+                <select id="RarityID" name="RarityID" class="form-control" required>
+                    {% for r in form_vm.rarities %}
+                    <option value="{{ r.RarityID }}">{{ r.RarityName }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create Item</button>
+            <a href="{{ url_for('main.item_list') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

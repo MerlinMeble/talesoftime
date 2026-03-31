@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Characters{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>🧙 Characters</h1>
+        <p class="subtitle">{{ vm.total }} character{{ 's' if vm.total != 1 }} registered</p>
+    </div>
+    <a href="{{ url_for('main.character_create') }}" class="btn btn-primary">+ New Character</a>
+</div>
+
+{% if vm.characters %}
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Class</th>
+                <th>Species</th>
+                <th>Alignment</th>
+                <th>Level</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for c in vm.characters %}
+            <tr>
+                <td><strong>{{ c.name }}</strong></td>
+                <td><span class="badge badge-class">{{ c.character_class }}</span></td>
+                <td>{{ c.species }}</td>
+                <td><span class="badge badge-alignment">{{ c.alignment }}</span></td>
+                <td>
+                    <span class="level-badge">Lv {{ c.level }}</span>
+                </td>
+                <td class="actions">
+                    <a href="{{ url_for('main.character_inventory', character_id=c.character_id) }}" class="btn btn-sm btn-secondary">🎒 Inventory</a>
+                    <a href="{{ url_for('main.character_quests', character_id=c.character_id) }}" class="btn btn-sm btn-secondary">📜 Quests</a>
+                    <a href="{{ url_for('main.character_edit', character_id=c.character_id) }}" class="btn btn-sm btn-warning">✏️ Edit</a>
+                    <form method="POST" action="{{ url_for('main.character_delete', character_id=c.character_id) }}" style="display:inline" onsubmit="return confirm('Delete {{ c.name }}?')">
+                        <button type="submit" class="btn btn-sm btn-danger">🗑 Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <p>🧙 No characters yet.</p>
+    <a href="{{ url_for('main.character_create') }}" class="btn btn-primary">Create your first character</a>
+</div>
+{% endif %}
+{% endblock %}

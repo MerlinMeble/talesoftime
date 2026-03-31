@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}{{ action }} Character{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>🧙 {{ action }} Character</h1>
+    </div>
+    <a href="{{ url_for('main.character_list') }}" class="btn btn-secondary">← Back</a>
+</div>
+
+<div class="form-card">
+    <form method="POST">
+        <div class="form-group">
+            <label for="CharacterName">Character Name</label>
+            <input type="text" id="CharacterName" name="CharacterName" class="form-control" required
+                   value="{{ form_vm.character.CharacterName if form_vm.character else '' }}">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="ClassID">Class</label>
+                <select id="ClassID" name="ClassID" class="form-control" required>
+                    {% for cls in form_vm.classes %}
+                    <option value="{{ cls.ClassID }}"
+                        {% if form_vm.character and form_vm.character.ClassID == cls.ClassID %}selected{% endif %}>
+                        {{ cls.ClassName }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="SpeciesID">Species</label>
+                <select id="SpeciesID" name="SpeciesID" class="form-control" required>
+                    {% for s in form_vm.species %}
+                    <option value="{{ s.SpeciesID }}"
+                        {% if form_vm.character and form_vm.character.SpeciesID == s.SpeciesID %}selected{% endif %}>
+                        {{ s.SpeciesName }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="AlignmentID">Alignment</label>
+                <select id="AlignmentID" name="AlignmentID" class="form-control" required>
+                    {% for a in form_vm.alignments %}
+                    <option value="{{ a.AlignmentID }}"
+                        {% if form_vm.character and form_vm.character.AlignmentID == a.AlignmentID %}selected{% endif %}>
+                        {{ a.AlignmentName }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Level">Level</label>
+                <input type="number" id="Level" name="Level" class="form-control"
+                       min="1" max="20" value="{{ form_vm.character.Level if form_vm.character else 1 }}" required>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">{{ action }} Character</button>
+            <a href="{{ url_for('main.character_list') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

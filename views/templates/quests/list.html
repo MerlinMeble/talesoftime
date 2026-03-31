@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Quests{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>📜 Quests</h1>
+        <p class="subtitle">{{ vm.total }} quest{{ 's' if vm.total != 1 }} available</p>
+    </div>
+    <a href="{{ url_for('main.quest_create') }}" class="btn btn-primary">+ New Quest</a>
+</div>
+
+{% if vm.quests %}
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr><th>Quest Name</th><th>Region</th><th>Difficulty</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            {% for q in vm.quests %}
+            <tr>
+                <td><strong>{{ q.name }}</strong></td>
+                <td>{{ q.region }}</td>
+                <td><span class="badge badge-difficulty">{{ q.difficulty }}</span></td>
+                <td class="actions">
+                    <form method="POST" action="{{ url_for('main.quest_delete', quest_id=q.quest_id) }}" style="display:inline" onsubmit="return confirm('Delete {{ q.name }}?')">
+                        <button type="submit" class="btn btn-sm btn-danger">🗑 Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <p>📜 No quests yet.</p>
+    <a href="{{ url_for('main.quest_create') }}" class="btn btn-primary">Create your first quest</a>
+</div>
+{% endif %}
+{% endblock %}

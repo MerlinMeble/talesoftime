@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ char.name }}'s Inventory{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>🎒 {{ char.name }}'s Inventory</h1>
+        <p class="subtitle">{{ char.character_class }} · {{ char.species }} · Level {{ char.level }}</p>
+    </div>
+    <a href="{{ url_for('main.character_list') }}" class="btn btn-secondary">← Characters</a>
+</div>
+
+<div class="two-col">
+    <section>
+        <h2>Current Items</h2>
+        {% if inventory %}
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead>
+                    <tr><th>Item</th><th>Type</th><th>Rarity</th><th>Qty</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for entry in inventory %}
+                    <tr>
+                        <td><strong>{{ entry.item_name }}</strong></td>
+                        <td>{{ entry.item_type }}</td>
+                        <td><span class="badge badge-rarity rarity-{{ entry.rarity | lower }}">{{ entry.rarity }}</span></td>
+                        <td>{{ entry.quantity }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('main.inventory_remove', inventory_id=entry.inventory_id) }}">
+                                <button class="btn btn-sm btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty-state">No items in inventory.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h2>Add Item</h2>
+        <div class="form-card">
+            <form method="POST" action="{{ url_for('main.inventory_add', character_id=char.character_id) }}">
+                <div class="form-group">
+                    <label for="ItemID">Item</label>
+                    <select name="ItemID" id="ItemID" class="form-control" required>
+                        {% for item in items %}
+                        <option value="{{ item['ItemID'] }}">{{ item['ItemName'] }} ({{ item['RarityName'] }})</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="Quantity">Quantity</label>
+                    <input type="number" name="Quantity" id="Quantity" class="form-control" value="1" min="1" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Add to Inventory</button>
+            </form>
+        </div>
+    </section>
+</div>
+{% endblock %}

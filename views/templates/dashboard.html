@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>⚔️ Dashboard</h1>
+    <p class="subtitle">Nova Systems - Tales of Time Database Manager</p>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">🧙</div>
+        <div class="stat-value">{{ vm.total_characters }}</div>
+        <div class="stat-label">Characters</div>
+        <a href="{{ url_for('main.character_list') }}" class="btn btn-sm btn-primary">Manage</a>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">🗡️</div>
+        <div class="stat-value">{{ vm.total_items }}</div>
+        <div class="stat-label">Items</div>
+        <a href="{{ url_for('main.item_list') }}" class="btn btn-sm btn-primary">Manage</a>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">📜</div>
+        <div class="stat-value">{{ vm.total_quests }}</div>
+        <div class="stat-label">Quests</div>
+        <a href="{{ url_for('main.quest_list') }}" class="btn btn-sm btn-primary">Manage</a>
+    </div>
+</div>
+
+<div class="quick-links">
+    <h2>Quick Actions</h2>
+    <div class="action-grid">
+        <a href="{{ url_for('main.character_create') }}" class="action-card">
+            <span class="action-icon">➕</span>
+            <span>New Character</span>
+        </a>
+        <a href="{{ url_for('main.item_create') }}" class="action-card">
+            <span class="action-icon">➕</span>
+            <span>New Item</span>
+        </a>
+        <a href="{{ url_for('main.quest_create') }}" class="action-card">
+            <span class="action-icon">➕</span>
+            <span>New Quest</span>
+        </a>
+    </div>
+</div>
+{% endblock %}
