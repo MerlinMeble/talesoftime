@@ -8,14 +8,7 @@ Replaces SQLAlchemy ORM entirely. Responsibilities:
 
 No ORM classes, no session management, no db.Model inheritance.
 """
-"""
-models.py - Raw SQL schema and database connection for Tales of Time.
 
-Replaces SQLAlchemy ORM entirely. Responsibilities:
-- Define the database connection factory
-- Define and create all 13 tables via raw DDL SQL
-- Provide a single get_db() function consumed by repositories
-"""
 
 import sqlite3
 import os
@@ -46,12 +39,12 @@ def get_db() -> sqlite3.Connection:
     return conn
 
 
-# — Schema DDL ————————————————————————————————————————————————————————————————
+#  Schema DDL 
 # Each CREATE TABLE mirrors the specification exactly.
 # IF NOT EXISTS means this is safe to call on every app start.
 
 _SCHEMA = """
--- Lookup / Reference tables ————————————————————————————————————————————————
+-- Lookup / Reference tables 
 
 CREATE TABLE IF NOT EXISTS CharacterClass (
     ClassID        INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -89,7 +82,7 @@ CREATE TABLE IF NOT EXISTS Difficulty (
     DifficultyName  VARCHAR(50) NOT NULL UNIQUE
 );
 
--- Core entities ————————————————————————————————————————————————————————————————
+-- Core entities 
 
 CREATE TABLE IF NOT EXISTS Character (
     CharacterID     INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -121,7 +114,7 @@ CREATE TABLE IF NOT EXISTS Quest (
     FOREIGN KEY (DifficultyID) REFERENCES Difficulty(DifficultyID)
 );
 
--- Join tables ————————————————————————————————————————————————————————————————
+-- Join tables 
 
 CREATE TABLE IF NOT EXISTS Inventory (
     InventoryID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -146,7 +139,7 @@ CREATE TABLE IF NOT EXISTS CharacterQuest (
 def init_db() -> None:
     """
     Execute the schema DDL against the database.
-    Safe to call on every startup — all statements use IF NOT EXISTS.
+    Safe to call on every startup ï¿½ all statements use IF NOT EXISTS.
     Called by the Flask app factory instead of db.create_all().
     """
     with get_db() as conn:
